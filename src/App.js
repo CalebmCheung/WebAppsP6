@@ -40,6 +40,7 @@ class App extends Component {
  
    convertPlan(currPlan) {
      // add your code from Proj#2 here
+	 // test commit
  }
  
 	render(){
