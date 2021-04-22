@@ -4,9 +4,9 @@ import './App.css';
 import Term from './components/Term';
 import UpperRight from './components/UpperRight';
 import UpperLeft from './components/UpperLeft';
-import LowerRight from './components/LowerRight';
+//import LowerRight from './components/LowerRight';
 import LowerLeft from './components/LowerLeft';
-import UserData from './components/UserData';
+//import UserData from './components/UserData';
 //import Banner from './components/Banner';
 
 class App extends Component {
@@ -25,17 +25,16 @@ class App extends Component {
   	loadNewPlan(){
     	fetch('http://judah.cedarville.edu/~kretsch/TermProject/getAllNoSession.php')
 		.then(response => response.json())
-		.then(data => {var PlanObject = data});
-		return PlanObject;
+		.then(data => this.setState({fullplan: data}));
 	}
    
    componentDidMount() {
-		var temp = this.loadNewPlan();
+		this.loadNewPlan();
 	 	this.doSomething();
    }
 
    doSomething(){
-	   console.log(this.state.fullplan);
+	console.log(this.state.fullplan);
    }
    
 
@@ -44,13 +43,11 @@ class App extends Component {
  
  
 	render(){
+
 	  return (
 		<div className="App" id="main">
-			{/*<Banner>*/}
-			{/*<BannerRight planList={this.state.planList}/> */}
-			{/*<UserData/>*/}
-			{/*<UpperLeft requirements={this.state.requirements} 
-        catalog={this.state.catalog} /> */}
+			{/*<UserData plans={this.state.planList} catalog={this.state.catalog} totCredits={this.state.totCredits}/>*/}
+			{/*<UpperLeft requirements={this.state.requirements} catalog={this.state.catalog} /> */}
 			{/*<UpperRight plan={this.state.plan} catalog={this.state.catalog} totCredits={this.state.totCredits}/>*/}
 			<LowerLeft />
 			{/*<LowerRight catalog={this.state.catalog} /> */}

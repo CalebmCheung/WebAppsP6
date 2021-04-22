@@ -26,7 +26,7 @@ class UpperRight extends Component {
 					temp = "";
 					semCredits = 0;
 					
-					html += "</div>";
+					html += "</div>t";
 					html += "<div class=\"sem\">";
 					html += "<span style=\"font-weight:bold\" class=\"semyr\">Summer " + key + "</span>";
 					for (var c in year.summer) {
