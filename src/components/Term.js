@@ -3,25 +3,33 @@ import React, {Component} from 'react';
 class Term extends Component {
 	
 	render (){
-		//const courseList = this.props.data;
-        let courseList = {};
+		const courseList = this.props.data;
+        //let courseList = {};
 		let courses = Object.entries(courseList).map(([key,value]) => {
 		  	const courseName = key+ " " + this.props.catalog.courses[key].name;
 		  	return (
 				<p>
-				{courseName}
+					{courseName}
 				</p>
 			);	
 		});
 
-		return (
-		<div class="semester">
-			<div className="semHeader">
-				{this.props.term}
+		if(this.props.term != "Fall"){
+			return (
+			<div class="sem">
+				<span class="semyr">{this.props.term} {parseInt(this.props.year) + 1}</span>
+				<span class="classes">{courses}</span>
 			</div>
-			{courses}
-		</div>
-	  	);
+			);
+		}
+		else {
+			return (
+				<div class="sem">
+					<span class="semyr">{this.props.term} {this.props.year}</span>
+					<span class="classes">{courses}</span>
+				</div>
+			);
+		}
 	}
 }
 export default Term;
