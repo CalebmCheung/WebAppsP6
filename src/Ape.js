@@ -4,9 +4,10 @@ import './App.css';
 import Term from './components/Term';
 import UpperRight from './components/UpperRight';
 import UpperLeft from './components/UpperLeft';
-//import LowerRight from './components/LowerRight';
+import LowerRight from './components/LowerRight';
 import LowerLeft from './components/LowerLeft';
 import UserData from './components/UserData';
+import { Redirect } from 'react-router';
 //import Banner from './components/Banner';
 
 class Ape extends Component {
@@ -19,14 +20,38 @@ class Ape extends Component {
 		  	planList: null,
 		  	catalog: null,
 		  	fullplan: null,
-		  	totCredits: 0
+		  	totCredits: 0,
+			planNum: 0
 		};
+		this.setTotCredits = this.setTotCredits.bind(this);
+		this.setPlanNum = this.setPlanNum.bind(this);
+	}
+
+	setTotCredits(num){
+		this.setState({
+			totCredits: this.state.totCredits += num
+		  });
+	}
+	
+	setPlanNum(num){
+		console.log("plan changed");
+		if(this.state.planNum == 0){
+			this.setState({
+				planNum: 1
+			});
+		}else if(this.state.planNum == 1){
+			this.setState({
+				planNum: 0
+			});
+		}
+		this.loadNewPlan();
+		console.log(this.state.planNum);
 	}
 
   	loadNewPlan(){
     	fetch('http://judah.cedarville.edu/~kretsch/TermProject/getAllNoSession.php')
 		.then(response => response.json())
-		.then(data => this.setState({fullplan: data, plan: this.convertPlan(data), catalog: data.catalog, planList: data.plans, loading: false, requirements: data.requirements}));
+		.then(data => this.setState({fullplan: data, plan: this.convertPlan(data, 0), catalog: data.catalog, planList: data.plans, loading: false, requirements: data.requirements}));
 	}
    
    async componentDidMount() {
@@ -34,14 +59,14 @@ class Ape extends Component {
    	}
 
 	
-   
+   //convert plan to different format
    convertPlan(phpPlan) {
-		var studentPlan = new Plan(phpPlan.plans[0].name,phpPlan.plans[0].catYear,phpPlan.plans[0].major,phpPlan.plans[0].student,phpPlan.plans[0].currYear,phpPlan.plans[0].currSem);
-		for (var x in phpPlan.plans[0].courses) {
-			studentPlan.addCourse(phpPlan.plans[0].courses[x].id, phpPlan.catalog.courses[phpPlan.plans[0].courses[x].id].name, phpPlan.plans[0].courses[x].term, phpPlan.plans[0].courses[x].year, phpPlan.catalog.courses[phpPlan.plans[0].courses[x].id].credits);
+		var studentPlan = new Plan(phpPlan.plans[this.state.planNum].name,phpPlan.plans[this.state.planNum].catYear,phpPlan.plans[this.state.planNum].major,phpPlan.plans[this.state.planNum].student,phpPlan.plans[this.state.planNum].currYear,phpPlan.plans[this.state.planNum].currSem);
+		for (var x in phpPlan.plans[this.state.planNum].courses) {
+			studentPlan.addCourse(phpPlan.plans[this.state.planNum].courses[x].id, phpPlan.catalog.courses[phpPlan.plans[this.state.planNum].courses[x].id].name, phpPlan.plans[this.state.planNum].courses[x].term, phpPlan.plans[this.state.planNum].courses[x].year, phpPlan.catalog.courses[phpPlan.plans[this.state.planNum].courses[x].id].credits);
 		}
-		for (var key in phpPlan.plans[0].courses) {
-			var course = phpPlan.plans[0].courses[key];
+		for (var key in phpPlan.plans[this.state.planNum].courses) {
+			var course = phpPlan.plans[this.state.planNum].courses[key];
 			if (course.term == "Fall"){
 				var currYear = course.year;
 				if (studentPlan.years[currYear] == undefined){
@@ -68,20 +93,22 @@ class Ape extends Component {
 	}
 
 	render(){
-		if(this.state.loading){
+		if(localStorage.getItem("Login") != "Yessir"){
+			return (<Redirect to="/Login"/>);
+		}else if(this.state.loading){
 			return (<h1>...Loading</h1>)
-		}
-	
-		return (
+		}else return (
+			//create page layout
 			<div className="App" id="class_Data">
-				<UserData plans={this.state.planList} catalog={this.state.catalog} totCredits={this.state.totCredits}/>
+				<h1 id="APES">Academic Planning Environment Simulator (APES)</h1>
+				<UserData plans={this.state.planList} catalog={this.state.catalog} totCredits={this.state.totCredits} setPlanNum={this.setPlanNum}/>
 				<div id="Left">
-					<UpperLeft requirements={this.state.requirements} catalog={this.state.catalog} /> 
+					<UpperLeft requirements={this.state.requirements} catalog={this.state.catalog} plan={this.state.planNum} /> 
 					<LowerLeft />
 				</div>
 				<div id="Right">
-					<UpperRight plan={this.state.plan} catalog={this.state.catalog} totCredits={this.state.totCredits}/>
-					{/*<LowerRight catalog={this.state.catalog} /> */}
+					<UpperRight plan={this.state.plan} catalog={this.state.catalog} setTotCredits={this.setTotCredits}/>
+					<LowerRight catalog={this.state.catalog} />
 				</div>
 			</div>
 		);

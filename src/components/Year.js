@@ -69,9 +69,9 @@ class Year extends Component {
 		//if(this.props.year == 1 || this.props.year == 2 || this.props.year == 3){ 
 			return (
 				<div class="Year">
-					<Term year={this.props.data[0]} catalog={this.props.catalog} data={this.props.data[1].fall} term="Fall" />
-					<Term year={this.props.data[0]} catalog={this.props.catalog} data={this.props.data[1].spring} term="Spring" />
-					<Term year={this.props.data[0]} catalog={this.props.catalog} data={this.props.data[1].summer} term="Summer" />
+					<Term year={this.props.data[0]} catalog={this.props.catalog} setTotCredits={this.props.setTotCredits} data={this.props.data[1].fall} term="Fall" />
+					<Term year={this.props.data[0]} catalog={this.props.catalog} setTotCredits={this.props.setTotCredits} data={this.props.data[1].spring} term="Spring" />
+					<Term year={this.props.data[0]} catalog={this.props.catalog} setTotCredits={this.props.setTotCredits} data={this.props.data[1].summer} term="Summer" />
 				</div>
 			);
 		//}

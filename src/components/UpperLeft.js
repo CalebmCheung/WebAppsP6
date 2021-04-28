@@ -4,17 +4,36 @@ import 'react-light-accordion/demo/css/index.css';
 
 class UpperLeft extends Component {
 	render (){
-        const courseList = this.props.requirements[0].categories;
-        let courses = Object.entries(courseList).map(([key,value]) => {
-            var courseName;
-            value.courses.forEach(element => {
-                courseName += "<p>" + element + "</p>";
-            });
-            return (
-              <span>
-                  {courseName}
-              </span>
-            );	
+        var coreCourseName="";
+        const courseList = this.props.requirements[this.props.plan].categories;
+        let coreCourses = Object.entries(courseList).map(([key,value]) => {
+            if(key == "Core"){
+                coreCourseName = value.courses.map((element) => {
+                    return (
+                       <p>{element}</p>
+                    );
+                }); 
+            }
+        });
+        var electiveCourseName="";
+        let electiveCourses = Object.entries(courseList).map(([key,value]) => {
+            if(key == "Electives"){
+                electiveCourseName = value.courses.map((element) => {
+                    return (
+                       <p>{element}</p>
+                    );
+                }); 
+            }
+        });
+        var cognateCourseName="";
+        let cognateCourses = Object.entries(courseList).map(([key,value]) => {
+            if(key == "Cognates"){
+                cognateCourseName = value.courses.map((element) => {
+                    return (
+                       <p>{element}</p>
+                    );
+                }); 
+            }
         });
 	    return (
             
@@ -22,12 +41,14 @@ class UpperLeft extends Component {
                 <h3>Requirements</h3>
                 <Accordion atomic={true}>
                     <AccordionItem title="Core">
-                        <p>{courses}</p>
+                        <div id="Core">{coreCourseName}</div>
                     </AccordionItem>
                     <AccordionItem title="Electives">
+                        <div id="Electives">{electiveCourseName}</div>
                         
                     </AccordionItem>
-                    <AccordionItem title="Electives">
+                    <AccordionItem title="Cognates">
+                        <div id="Cognates">{cognateCourseName}</div>
                         
                     </AccordionItem>
                 </Accordion>

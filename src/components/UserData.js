@@ -7,7 +7,7 @@ class UserData extends Component {
         return(
             <div class ="user_Data" id="user_Data">
                 <LeftData plans={this.props.plans}/>
-                <RightData plans={this.props.plans} catalog={this.props.catalog} totCredits={this.props.totCredits}/>
+                <RightData plans={this.props.plans} catalog={this.props.catalog} totCredits={this.props.totCredits} setPlanNum={this.props.setPlanNum}/>
             </div>
         );
     }

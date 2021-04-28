@@ -21,7 +21,7 @@ class UpperRight extends Component {
 		  	var info = Object.entries(this.props.plan.years);
 			yrs = info.map((value, key) => {
 		  	return (
-				<Year catalog={this.props.catalog} year={key} data={value} />
+				<Year catalog={this.props.catalog} year={key} data={value} setTotCredits={this.props.setTotCredits}/>
 			);	
 	  });
 	  }
